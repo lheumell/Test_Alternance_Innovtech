@@ -1,0 +1,93 @@
+﻿@page "/counter"
+
+    <div class="container">
+        <h1>TEST ALTERNANCE INNOVTECH</h1>
+        <br />
+
+        <ul>
+            <li><input type="submit" value="Start" @onclick="@(async () => { StopWatch(); StopCount(); })" /></li>
+            <li><input type="submit" value="Pause" @onclick="@(async () => { is_stopwatchrunning = false; })" /></li>
+            <li><input type="submit" value="Stop" @onclick="@(async () => { is_stopwatchrunning = false; stopwatchvalue = new TimeSpan(); })" /></li>
+        </ul>
+        <br />
+        <br />
+        <h2>@stopwatchvalue</h2>
+        <p>Valeur décrémentée toute les 5sec : @count</p>
+        <br />
+        <br />
+        <p>Heumel Léo</p>
+
+    </div>
+
+
+<style>
+    .container{
+        width: 900px;
+        margin : auto ;
+        text-align : center ;
+    }
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+    }
+    li {
+        display: inline;
+        margin: 10px 30px 10px 30px 10px;
+    }
+    input[type=submit] {
+        text-decoration: none;
+        width: 150px;
+        height: 50px;
+        border-radius: 7px;
+        border-color: black;
+        background-color: white;
+        color: black;
+        transition-property: all;
+        transition-duration: 0.2s;
+    }
+        input[type=submit]:hover {
+            color: #4682B4;
+            border-color: #4682B4;
+        }
+</style>
+
+@code {
+    TimeSpan stopwatchvalue = new TimeSpan();
+    bool is_stopwatchrunning = false;
+    int count = 50;
+
+   /* [Parameter]
+    public int Count { get => count; set{ if (count == 0) { count = 50; } } }*/
+
+
+    //CREATE TIMER 
+    async Task StopWatch()
+    {
+        is_stopwatchrunning = true;
+        while (is_stopwatchrunning)
+        {
+            await Task.Delay(1000);
+            if (is_stopwatchrunning)
+            {
+                stopwatchvalue = stopwatchvalue.Add(new TimeSpan(0, 0, 1));
+                Console.WriteLine(count);
+                StateHasChanged();
+            }
+        }
+    }
+
+    //DECREMENT
+    async Task StopCount()
+    {
+        while (is_stopwatchrunning)
+        {
+            await Task.Delay(5000);
+            if (is_stopwatchrunning)
+            {
+                count -= 1;
+                StateHasChanged();
+            }
+        }
+    }
+}
